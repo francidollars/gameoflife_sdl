@@ -12,6 +12,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+// TODO Add TWODIMTREE structure with num_points (maybe unnecessary)
 // A structure to represent node of kd tree 
 typedef struct Node { 
 	int point[2]; // To store k dimensional point

@@ -37,8 +37,7 @@ SDL_SysMgr init_sdl(int window_width, int window_height) {
     // Check SDL_window for errors
 	if (!sdl_mgr.window || (SDL_GetWindowSurface(sdl_mgr.window)->w != window_width)
       || (SDL_GetWindowSurface(sdl_mgr.window)->h != window_height)) {
-		SDL_Log("Failed to create %d x %d window:\n\t%s\n", window_width,
-		window_height, SDL_GetError());
+		SDL_Log("Failed to create %d x %d window:\n\t%s\n", window_width, window_height, SDL_GetError());
 
 		return sdl_mgr;
 	}
@@ -55,20 +54,21 @@ SDL_SysMgr init_sdl(int window_width, int window_height) {
 	}
 
     if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear") != SDL_TRUE) {
-        SDL_Log("Failed to set hinting\n\t%s\n", SDL_GetError());
+        SDL_Log("Failed to set hinting:\n\t%s\n", SDL_GetError());
         
         return sdl_mgr;
     }
  
     SDL_DisplayMode display_mode;
  
-    for(int i = 0; i < SDL_GetNumVideoDisplays(); ++i)
+    for (int i = 0; i < SDL_GetNumVideoDisplays(); i++)
         if (SDL_GetCurrentDisplayMode(i, &display_mode) != 0) {
             // In case of error...
             SDL_Log("Could not get display mode for video display #%d:\n\t%s\n", i, SDL_GetError());
         } else {
             // On success, print the current display mode.
-            SDL_Log("Display #%d: current display mode is %dx%dpx @ %dhz.", i, display_mode.w, display_mode.h, display_mode.refresh_rate);
+            SDL_Log("Display #%d: current display mode is %dx%dpx @ %dhz.", i, display_mode.w, display_mode.h,
+              display_mode.refresh_rate);
         }
 
     sdl_mgr.running = true;
@@ -148,7 +148,7 @@ char* get_time(int time) {
     static char run_clock[9] = "";
     
     snprintf(run_clock, sizeof(run_clock), "%02d:%02d:%02d", (time / 3600000) % 60,
-			(time / 60000) % 60, (time / 1000) % 60);
+	  (time / 60000) % 60, (time / 1000) % 60);
     
     return run_clock;
 }

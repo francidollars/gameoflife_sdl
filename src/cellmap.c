@@ -106,6 +106,7 @@ void clear_cell(unsigned int x, unsigned int y) {
 
 }
 
+// TODO Implement wrapping
 bool cell_state(bool** map, unsigned int x, unsigned int y) {
 	if (cellmap->width <= x) {
 		// Print statement for Debugging (will get rid of in time)

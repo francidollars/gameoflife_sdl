@@ -14,6 +14,7 @@
  * @return initialized data structure
  */
 void init_data_structure(StructureType given_st, unsigned int width, unsigned int height) {
+    // TODO Implement error checking
     switch (given_st) {
         case CELLMAP:
             init_cellmap(width, height);
@@ -68,7 +69,7 @@ int get_num_points(StructureType st) {
  * @param st - user declared structure type to use
  * @return generic Point array that can be converted to SDL_Point array for drawing
  */
-Point* next_generation(StructureType st) {
+Point* next_generation(StructureType st, bool calc) {
     Point* points;
 
     switch (st) {
@@ -87,12 +88,20 @@ Point* next_generation(StructureType st) {
                     if (cell_state(cellmap_map, x, y)) {
                         temp_point.x = x;
                         temp_point.y = y;
-                        *(points + point_cnt++) = temp_point; 
+                        *(points + point_cnt++) = temp_point;
+
+                        if (point_cnt == num_points) {
+                            y = cellmap_height;
+                            break;
+                        }
+
                     }
                 }
             }
 
-            cellmap_next_generation();
+            if (calc)
+                cellmap_next_generation();
+
         } break;
         default:
             // TODO Implement default (uninitialized case)

@@ -40,7 +40,7 @@ int get_num_points(StructureType st);
 /**
  * Function to convert next generation points to generic Point array
  */ 
-Point* next_generation(StructureType st);
+Point* next_generation(StructureType st, bool calc);
 
 #endif /* DATASTRUCTURE_H_ */
 

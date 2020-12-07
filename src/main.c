@@ -28,12 +28,24 @@ int main (int argc, char* args[]) {
     set_cell(320 + 1, 240 + 1);
 
     while (sdlmgr.running) {
-        prepare_scene(sdlmgr, (SDL_Point*) next_generation(stype), get_num_points(stype));
+        input_handler(&sdlmgr, &x, &y);
+        set_cell(x, y);
+
+        prepare_scene(sdlmgr, (SDL_Point*) next_generation(stype, false), get_num_points(stype));
+        present_scene(sdlmgr.renderer);
+
+        SDL_Delay(10);
+    }
+
+    sdlmgr.running = true;
+
+    while (sdlmgr.running) {
+        prepare_scene(sdlmgr, (SDL_Point*) next_generation(stype, true), get_num_points(stype));
         present_scene(sdlmgr.renderer);
         
         input_handler(&sdlmgr, &x, &y);
         // TODO Implement user-set refresh rate (restricted by monitor refresh rate)
-        SDL_Delay(600);
+        SDL_Delay(100);
 	}
 
     del_data_structure(stype);

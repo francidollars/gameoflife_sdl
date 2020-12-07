@@ -24,37 +24,45 @@ typedef struct Cellmap {
 /**
  * Initializes current and next cellmaps for the game to be played.
  */
-Cellmap* init_cellmap(unsigned int width, unsigned int height);
+void init_cellmap(unsigned int width, unsigned int height);
 
 /**
  * Frees memory where cellmap exists
  */
-void del_cellmap(Cellmap* cellmap);
+void del_cellmap(void);
 
 /**
  * Turns cell on at screen position (x, y).
  */
-void set_cell(Cellmap* cellmap, unsigned int x, unsigned int y);
+void set_cell(unsigned int x, unsigned int y);
 
 /**
  * Turns cell off at screen position (x, y).
  */
-void clear_cell(Cellmap* cellmap, unsigned int x, unsigned int y);
+void clear_cell(unsigned int x, unsigned int y);
+
+int cellmap_get_num_points(void);
+
+bool** cellmap_get_map(void);
+
+unsigned int cellmap_get_width(void);
+  
+unsigned int cellmap_get_height(void);
 
 /**
  * Returns cell state (true = on | false = off).
  */
-bool cell_state(Cellmap* cellmap, unsigned int x, unsigned int y);
+bool cell_state(bool** map, unsigned int x, unsigned int y);
 
 /**
  * Returns the number of neighbors a specified cell has.
  */
-int count_neighbors(Cellmap* cellmap, unsigned int x, unsigned int y);
+int count_neighbors(bool** map, unsigned int x, unsigned int y);
 
 /**
  * 
  */
-void cellmap_next_generation(Cellmap* cellmap);
+void cellmap_next_generation(void);
 
 #endif /* CELLMAP_H_ */
 

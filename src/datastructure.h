@@ -18,22 +18,15 @@ typedef enum {
 } StructureType;
 
 typedef struct {
-    StructureType stype;
-    union {
-        Cellmap* cellmap;
-    } data;
-} DataStructure;
-
-typedef struct {
     int x;
     int y;
 } Point;
 
-DataStructure init_data_structure(StructureType given_st, unsigned int width, unsigned int height);
+void init_data_structure(StructureType given_st, unsigned int width, unsigned int height);
 
-int get_num_points(DataStructure ds);
+int get_num_points(StructureType st);
 
-Point* next_generation(DataStructure ds);
+Point* next_generation(StructureType st);
 
 #endif /* DATASTRUCTURE_H_ */
 

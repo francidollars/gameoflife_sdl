@@ -11,29 +11,30 @@
 #include "datastructure.h"
 
 int main (int argc, char* args[]) {
-    DataStructure data_st = init_data_structure(CELLMAP, 640, 480);
+    StructureType stype = CELLMAP;
+    init_data_structure(stype, 640, 480);
 
     SDL_SysMgr sdlmgr = init_sdl(640, 480);
     int x, y;
     
-    set_cell(data_st.data.cellmap, 320 - 1, 240 - 1);
-    set_cell(data_st.data.cellmap, 320, 240 - 1);
-    set_cell(data_st.data.cellmap, 320 + 1, 240 - 1);
-    set_cell(data_st.data.cellmap, 320 - 1, 240);
-    set_cell(data_st.data.cellmap, 320, 240);
-    set_cell(data_st.data.cellmap, 320 + 1, 240);
-    set_cell(data_st.data.cellmap, 320 - 1, 240 + 1);
-    set_cell(data_st.data.cellmap, 320, 240 + 1);
-    set_cell(data_st.data.cellmap, 320 + 1, 240 + 1);
+    set_cell(320 - 1, 240 - 1);
+    set_cell(320, 240 - 1);
+    set_cell(320 + 1, 240 - 1);
+    set_cell(320 - 1, 240);
+    set_cell(320, 240);
+    set_cell(320 + 1, 240);
+    set_cell(320 - 1, 240 + 1);
+    set_cell(320, 240 + 1);
+    set_cell(320 + 1, 240 + 1);
 
     while (sdlmgr.running) {
         input_handler(&sdlmgr, &x, &y);
 
-        prepare_scene(sdlmgr, (SDL_Point*) next_generation(data_st), get_num_points(data_st));
+        prepare_scene(sdlmgr, (SDL_Point*) next_generation(stype), get_num_points(stype));
         present_scene(sdlmgr.renderer);
         
         // TODO Implement user-set refresh rate (restricted by monitor refresh rate)
-        SDL_Delay(60);
+        SDL_Delay(600);
 	}
 
     SDL_Quit();

@@ -1,12 +1,5 @@
-SRC_FILES=['cellmap.c' , 'sdl_funcs.c' , 'twodim_tree.c' , 'datastructure.c']
-HEADER_FILES=['cellmap.h' , 'sdl_funcs.h' , 'datastructure.h']
+main_source = files('main.c')
+source_files = files('cellmap.c', 'sdl_funcs.c', 'twodim_tree.c', 'datastructure.c')
 
-sdl_dep = dependency('SDL2')
+project_sources = [ main_source , source_files ]
 
-executable(
-	meson.project_name(),
-	files('main.c', SRC_FILES),
-	dependencies : [sdl_dep],
-	install : true
-)
-	

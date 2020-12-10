@@ -1,7 +1,7 @@
 /*
  * sdl_funcs.h
  *
- *  Created on: Jan 1, 2020 
+ *  Created on: Jan 1, 2020
  *      Author: Mickey
  */
 
@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <SDL2/SDL.h>
-// #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_ttf.h>
 
 typedef struct SDL_SysMgr {
     SDL_Renderer* renderer;
@@ -45,9 +45,9 @@ void prepare_scene(SDL_SysMgr sdl_mgr, SDL_Point* points, int num_points);
 void present_scene(SDL_Renderer* renderer);
 
 /**
- * Get string of time 
- * 
- * @param time - 
+ * Get string of time
+ *
+ * @param time -
  * @return Returns string of application run time
  */
 char* get_time(int time);

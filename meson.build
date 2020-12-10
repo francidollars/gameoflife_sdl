@@ -6,16 +6,29 @@ project('gameoflife_sdl2', 'c',
                    ],
 )
 
+# Variables tracking sources and libraries
+library_path = [] # Used to set library path to external dependencies
+project_sources = []
+project_header_files = [] # Currently unused
 
-config_h = configuration_data()
-config_h.set_quoted('PACKAGE_VERSION', meson.project_version())
-configure_file(
-  output: 'gameoflife_sdl2-config.h',
-  configuration: config_h,
-)
-add_project_arguments([
-  '-I' + meson.build_root(),
-], language: 'c')
+inc = [include_directories('include')]
 
+subdir('include')
+subdir('external')
+
+# This triggers the builds of sources
 subdir('src')
+# This links all the static libs into the main source file to form a binary
+
+project_gol_deps = [
+  dependency('SDL2'),
+  dependency('SDL2_ttf'),
+]
+
+executable(
+	meson.project_name(),
+	project_sources,
+	include_directories : inc,
+	dependencies : project_gol_deps
+)
 

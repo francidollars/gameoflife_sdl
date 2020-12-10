@@ -130,7 +130,7 @@ void prepare_scene(SDL_SysMgr sdl_mgr, SDL_Point* points, int num_points) {
     TTF_CloseFont(font);
     
     SDL_Rect message_rect;
-    message_rect.x = (sdl_mgr.window_width - w) / 2;
+    message_rect.x = (SDL_GetWindowSurface(sdl_mgr.window)->w - w) / 2;
     message_rect.y = 0;
     message_rect.w = w;
     message_rect.h = h;

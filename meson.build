@@ -29,6 +29,7 @@ executable(
 	meson.project_name(),
 	project_sources,
 	include_directories : inc,
-	dependencies : project_gol_deps
+	dependencies : project_gol_deps,
+	install : true
 )
 

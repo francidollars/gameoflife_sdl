@@ -5,5 +5,5 @@ configure_file(
   configuration: config_h,
 )
 
-project_header_files = files('sdl_funcs.h', 'datastructure.h', 'cellmap.h', 'twodim_tree.h')
+project_header_files = files('sdl_funcs.h', 'SDL_FontCache.h', 'datastructure.h', 'cellmap.h', 'twodim_tree.h')
 

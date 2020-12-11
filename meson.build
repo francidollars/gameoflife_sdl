@@ -14,7 +14,7 @@ project_header_files = [] # Currently unused
 inc = [include_directories('include')]
 
 subdir('include')
-subdir('external')
+subdir('external') # TODO Add SDL2, SDL2_ttf, and SDL_FontCache
 
 # This triggers the builds of sources
 subdir('src')
@@ -24,6 +24,10 @@ project_gol_deps = [
   dependency('SDL2'),
   dependency('SDL2_ttf'),
 ]
+
+add_project_arguments([
+  '-I' + meson.build_root(),
+], language: 'c')
 
 executable(
 	meson.project_name(),

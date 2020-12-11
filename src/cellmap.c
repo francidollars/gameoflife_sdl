@@ -70,12 +70,12 @@ unsigned int cellmap_get_height(void) {
 void set_cell(unsigned int x, unsigned int y) {
 	if (cellmap->width <= x) {
 		// Print statement for Debugging (will get rid of in time)
-		printf("WARNING:Call to SET_CELL out of bounds|x-range: %u >= %u\n", x, cellmap->width);
+		// printf("WARNING:Call to SET_CELL out of bounds|x-range: %u >= %u\n", x, cellmap->width);
         
         return;
 	} else if (cellmap->height <= y) {
 		// Print statement for Debugging (will get rid of in time)
-		printf("WARNING:Call to SET_CELL out of bounds|y-range: %u >= %u\n", y, cellmap->height);
+		// printf("WARNING:Call to SET_CELL out of bounds|y-range: %u >= %u\n", y, cellmap->height);
         
         return;
 	}
@@ -91,12 +91,12 @@ void clear_cell(unsigned int x, unsigned int y) {
         return;
     } else if (cellmap->width <= x) {
 		// Print statement for Debugging (will get rid of in time)
-		printf("WARNING:Call to CLEAR_CELL out of bounds|x-range: %u >= %u\n", x, cellmap->width);
+		// printf("WARNING:Call to CLEAR_CELL out of bounds|x-range: %u >= %u\n", x, cellmap->width);
         
         return;
 	} else if (cellmap->height <= y) {
 		// Print statement for Debugging (will get rid of in time)
-		printf("WARNING:Call to CLEAR_CELL out of bounds|y-range: %u >= %u\n", y, cellmap->height);
+		// printf("WARNING:Call to CLEAR_CELL out of bounds|y-range: %u >= %u\n", y, cellmap->height);
         
         return;
 	}
@@ -110,12 +110,12 @@ void clear_cell(unsigned int x, unsigned int y) {
 bool cell_state(bool** map, unsigned int x, unsigned int y) {
 	if (cellmap->width <= x) {
 		// Print statement for Debugging (will get rid of in time)
-		printf("WARNING:Call to CELL_STATE out of bounds|x-range: %u >= %u\n", x, cellmap->width);
+		// printf("WARNING:Call to CELL_STATE out of bounds|x-range: %u >= %u\n", x, cellmap->width);
         
 		return false;
     } else if (cellmap->height <= y) {
 		// Print statement for Debugging (will get rid of in time)
-		printf("WARNING:Call to CELL_STATE out of bounds|y-range: %u >= %u\n", y, cellmap->height);
+		// printf("WARNING:Call to CELL_STATE out of bounds|y-range: %u >= %u\n", y, cellmap->height);
         
         return false;
 	}
@@ -130,12 +130,12 @@ int count_neighbors(bool** map, unsigned int x, unsigned int y) {
         return 0;
     } else if (cellmap->width <= x) {
 		// Print statement for Debugging (will get rid of in time)
-		printf("WARNING:Call to COUNT_NEIGHBORS out of bounds|x-range: %u >= %u\n", x, cellmap->width);
+		// printf("WARNING:Call to COUNT_NEIGHBORS out of bounds|x-range: %u >= %u\n", x, cellmap->width);
         
         return -1;
 	} else if (cellmap->height <= y) {
 		// Print statement for Debugging (will get rid of in time)
-		printf("WARNING:Call to COUNT_NEIGHBORS out of bounds|y-range: %u >= %u\n", y, cellmap->height);
+		// printf("WARNING:Call to COUNT_NEIGHBORS out of bounds|y-range: %u >= %u\n", y, cellmap->height);
         
         return -1;
 	}

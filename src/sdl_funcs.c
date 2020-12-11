@@ -12,21 +12,13 @@ SDL_SysMgr init_sdl(int window_width, int window_height) {
     SDL_SysMgr sdl_mgr;
     sdl_mgr.window = NULL;
     sdl_mgr.renderer = NULL;
-    
+
     // Check for initialization failure
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 		SDL_Log("SDL initialization failed:\n\t%s\n", SDL_GetError());
 
 		return sdl_mgr;
 	}
-
-    /* TODO Clock Implementation
-	if (TTF_Init() < 0) {
-		printf("TTF initialization failed:\n\t%s\n", TTF_GetError());
-
-		return sdl_mgr;
-	}
-    */
 
     // Initialize SDL_Window
 	sdl_mgr.window = SDL_CreateWindow("Game of Life", SDL_WINDOWPOS_CENTERED,
@@ -61,7 +53,7 @@ SDL_SysMgr init_sdl(int window_width, int window_height) {
  
     SDL_DisplayMode display_mode;
  
-    for (int i = 0; i < SDL_GetNumVideoDisplays(); i++)
+    for (int i = 0; i < SDL_GetNumVideoDisplays(); i++) {
         if (SDL_GetCurrentDisplayMode(i, &display_mode) != 0) {
             // In case of error...
             SDL_Log("Could not get display mode for video display #%d:\n\t%s\n", i, SDL_GetError());
@@ -70,26 +62,58 @@ SDL_SysMgr init_sdl(int window_width, int window_height) {
             SDL_Log("Display #%d: current display mode is %dx%dpx @ %dhz.", i, display_mode.w, display_mode.h,
               display_mode.refresh_rate);
         }
+    }
+
+	if (TTF_Init() < 0) {
+		printf("TTF initialization failed:\n\t%s\n", TTF_GetError());
+
+		return sdl_mgr;
+	}
+
+    // TODO Dynamically select font
+    sdl_mgr.font = FC_CreateFont();
+    FC_LoadFont(sdl_mgr.font, sdl_mgr.renderer, "/usr/share/fonts/liberation/LiberationMono-Regular.ttf",
+      11, FC_MakeColor(255, 255, 255, 255), TTF_STYLE_NORMAL);
+
+    if (!sdl_mgr.font) {
+        printf("TTF_Font call failed:\n\t%s\n", TTF_GetError());
+        sdl_mgr.running = false;
+
+        return sdl_mgr;
+    }
 
     sdl_mgr.running = true;
 
     return sdl_mgr;
 }
 
-void input_handler(SDL_SysMgr* sdl_mgr, int* x, int* y) {
+int input_handler(SDL_SysMgr* sdl_mgr, int* x, int* y) {
+    int event_int = 0;
+
     while (SDL_PollEvent(&(sdl_mgr->events))) {
         switch (sdl_mgr->events.type) {
             case SDL_QUIT:
-                sdl_mgr->running = false;
+                event_int = -1;
                 break;
             case SDL_MOUSEMOTION:
                 if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)) {
                     *x = sdl_mgr->events.motion.x;
                     *y = sdl_mgr->events.motion.y;
+                    event_int = 2;
+                }
+                break;
+            case SDL_KEYDOWN:
+                switch (sdl_mgr->events.key.keysym.sym) {
+                    case SDLK_SPACE:
+                        event_int = 1;
+                        break;
+                    default:
+                        break;
                 }
         }
     }
-    
+
+    return event_int;
 }
 
 void prepare_scene(SDL_SysMgr sdl_mgr, SDL_Point* points, int num_points) {
@@ -101,42 +125,10 @@ void prepare_scene(SDL_SysMgr sdl_mgr, SDL_Point* points, int num_points) {
     SDL_SetRenderDrawColor(sdl_mgr.renderer, 255, 0, 0, 255);
     SDL_RenderDrawPoints(sdl_mgr.renderer, points, num_points);
     
-    /* TODO Clock Implementation
     char* time_str = get_time(SDL_GetTicks());
     
-    TTF_Font* font = TTF_OpenFont("/usr/share/fonts/gnu-free/FreeSans.ttf", 11);
-    
-    if (!font) {
-        printf("TTF_Font call failed:\n\t%s\n", TTF_GetError());
-        sdl_mgr.running = false;
-        
-        return;
-    }
-    
-    int w = 0;
-    int h = 0;
-    SDL_Color white = { 255, 255, 255, 255 };
-    
-    if (TTF_SizeText(font, time_str, &w, &h)) {
-        printf("TTF_SizeText call failed:\n\t%s\n", TTF_GetError());
-        sdl_mgr.running = false;
-        
-        return;
-    }
-    
-    SDL_Surface* message_surface = TTF_RenderText_Solid(font, time_str, white);
-    SDL_Texture* message = SDL_CreateTextureFromSurface(sdl_mgr.renderer, message_surface);
-    SDL_FreeSurface(message_surface);
-    TTF_CloseFont(font);
-    
-    SDL_Rect message_rect;
-    message_rect.x = (SDL_GetWindowSurface(sdl_mgr.window)->w - w) / 2;
-    message_rect.y = 0;
-    message_rect.w = w;
-    message_rect.h = h;
-    
-    SDL_RenderCopy(sdl_mgr.renderer, message, NULL, &message_rect);
-    */
+    FC_Draw(sdl_mgr.font, sdl_mgr.renderer, ((SDL_GetWindowSurface(sdl_mgr.window)->w - FC_GetWidth(sdl_mgr.font, "%s", time_str)) / 2), 0, "%s", time_str);
+
 }
 
 void present_scene(SDL_Renderer* renderer) {

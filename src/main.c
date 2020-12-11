@@ -11,25 +11,24 @@
 #include "datastructure.h"
 
 int main (int argc, char* args[]) {
-    StructureType stype = CELLMAP;
+   /* if (argc < 4 && atoi(args[3]) != 0) {
+
+        return EXIT_FAILURE;
+    } */
+
+    StructureType stype = CELLMAP; // (StructureType) strtol(args[3], NULL, 10);
+    // unsigned int init_width = 640; // (unsigned int) strtol(args[1], NULL, 10);
+    // unsigned int init_height = 480; // (unsigned int) strtol(args[2], NULL, 10);
+
     init_data_structure(stype, 640, 480);
 
     SDL_SysMgr sdlmgr = init_sdl(640, 480);
+    int event_status;
     int x, y;
    
-    set_cell(320 - 1, 240 - 1);
-    set_cell(320, 240 - 1);
-    set_cell(320 + 1, 240 - 1);
-    set_cell(320 - 1, 240);
-    set_cell(320, 240);
-    set_cell(320 + 1, 240);
-    set_cell(320 - 1, 240 + 1);
-    set_cell(320, 240 + 1);
-    set_cell(320 + 1, 240 + 1);
-
-    while (sdlmgr.running) {
-        input_handler(&sdlmgr, &x, &y);
-        set_cell(x, y);
+    while ((event_status = input_handler(&sdlmgr, &x, &y)) != 1) {
+        if (event_status == 2)
+            set_cell(x, y);
 
         prepare_scene(sdlmgr, (SDL_Point*) next_generation(stype, false), get_num_points(stype));
         present_scene(sdlmgr.renderer);
@@ -37,18 +36,16 @@ int main (int argc, char* args[]) {
         SDL_Delay(10);
     }
 
-    sdlmgr.running = true;
-
-    while (sdlmgr.running) {
+    while (input_handler(&sdlmgr, NULL, NULL) > 0) {
         prepare_scene(sdlmgr, (SDL_Point*) next_generation(stype, true), get_num_points(stype));
         present_scene(sdlmgr.renderer);
         
-        input_handler(&sdlmgr, &x, &y);
         // TODO Implement user-set refresh rate (restricted by monitor refresh rate)
         SDL_Delay(100);
 	}
 
     del_data_structure(stype);
+    FC_FreeFont(sdlmgr.font);
     SDL_Quit();
 
     return 0;

@@ -13,11 +13,13 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include "SDL_FontCache.h"
 
-typedef struct SDL_SysMgr {
+typedef struct {
     SDL_Renderer* renderer;
     SDL_Window* window;
     SDL_Event events;
+    FC_Font* font;
     // int window_width; use SDL_GetWindowSurface(SDL_Window* window)->w
     // int window_height; use SDL_GetWindowSurface(SDL_Window* window)->h
     int ref_rate;
@@ -32,7 +34,7 @@ SDL_SysMgr init_sdl(int window_width, int window_height);
 /**
  * Handling input from user
  */
-void input_handler(SDL_SysMgr* sdl_mgr, int* x, int* y);
+int input_handler(SDL_SysMgr* sdl_mgr, int* x, int* y);
 
 /**
  * Prepare window for display

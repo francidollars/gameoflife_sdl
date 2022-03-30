@@ -22,7 +22,7 @@ typedef struct {
     FC_Font* font;
     // int window_width; use SDL_GetWindowSurface(SDL_Window* window)->w
     // int window_height; use SDL_GetWindowSurface(SDL_Window* window)->h
-    int ref_rate;
+    int ref_rate; // TODO: Already stored in SDL_DisplayMode
     bool running;
 } SDL_SysMgr;
 
@@ -54,5 +54,4 @@ void present_scene(SDL_Renderer* renderer);
  */
 char* get_time(int time);
 
-#endif /* CELLMAP_H_ */
-
+#endif /* SDL_FUNCS_H_ */

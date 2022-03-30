@@ -1,5 +1,5 @@
 /*
- * sdl_funcs.c 
+ * sdl_funcs.c
  *
  *  Created on: Jan 1, 2020
  *      Author: Mickey
@@ -7,25 +7,25 @@
 
 #include "sdl_funcs.h"
 
-// TODO proper error logging
+// TODO: proper error logging
+// TODO: One return sdl_mgr statement
 SDL_SysMgr init_sdl(int window_width, int window_height) {
     SDL_SysMgr sdl_mgr;
     sdl_mgr.window = NULL;
     sdl_mgr.renderer = NULL;
 
     // Check for initialization failure
-	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) { // TODO: Change to SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS
 		SDL_Log("SDL initialization failed:\n\t%s\n", SDL_GetError());
 
 		return sdl_mgr;
 	}
 
     // Initialize SDL_Window
-	sdl_mgr.window = SDL_CreateWindow("Game of Life", SDL_WINDOWPOS_CENTERED,
-      SDL_WINDOWPOS_CENTERED, window_width, window_height, SDL_WINDOW_SHOWN);
-    
-    SDL_SetWindowResizable(sdl_mgr.window, false);    
-    
+	sdl_mgr.window = SDL_CreateWindow("Game of Life", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, window_width, window_height, SDL_WINDOW_SHOWN);
+
+    SDL_SetWindowResizable(sdl_mgr.window, false); //TODO: Pass flags in SDL_CreateWindow, this might not be necessary
+
     // Check SDL_window for errors
 	if (!sdl_mgr.window || (SDL_GetWindowSurface(sdl_mgr.window)->w != window_width)
       || (SDL_GetWindowSurface(sdl_mgr.window)->h != window_height)) {
@@ -47,12 +47,12 @@ SDL_SysMgr init_sdl(int window_width, int window_height) {
 
     if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear") != SDL_TRUE) {
         SDL_Log("Failed to set hinting:\n\t%s\n", SDL_GetError());
-        
+
         return sdl_mgr;
     }
- 
+
     SDL_DisplayMode display_mode;
- 
+
     for (int i = 0; i < SDL_GetNumVideoDisplays(); i++) {
         if (SDL_GetCurrentDisplayMode(i, &display_mode) != 0) {
             // In case of error...
@@ -87,6 +87,7 @@ SDL_SysMgr init_sdl(int window_width, int window_height) {
     return sdl_mgr;
 }
 
+// TODO: Return SDL enum
 int input_handler(SDL_SysMgr* sdl_mgr, int* x, int* y) {
     int event_int = 0;
 
@@ -120,28 +121,27 @@ void prepare_scene(SDL_SysMgr sdl_mgr, SDL_Point* points, int num_points) {
     // Set background to black
     SDL_SetRenderDrawColor(sdl_mgr.renderer, 0, 0, 0, 0);
     SDL_RenderClear(sdl_mgr.renderer);
-    
+
     // Set pixel color to red
     SDL_SetRenderDrawColor(sdl_mgr.renderer, 255, 0, 0, 255);
     SDL_RenderDrawPoints(sdl_mgr.renderer, points, num_points);
-    
+
     char* time_str = get_time(SDL_GetTicks());
-    
+
     FC_Draw(sdl_mgr.font, sdl_mgr.renderer, ((SDL_GetWindowSurface(sdl_mgr.window)->w - FC_GetWidth(sdl_mgr.font, "%s", time_str)) / 2), 0, "%s", time_str);
 
 }
 
 void present_scene(SDL_Renderer* renderer) {
     SDL_RenderPresent(renderer);
-    
+
 }
 
 char* get_time(int time) {
     static char run_clock[9] = "";
-    
+
     snprintf(run_clock, sizeof(run_clock), "%02d:%02d:%02d", (time / 3600000) % 60,
 	  (time / 60000) % 60, (time / 1000) % 60);
-    
+
     return run_clock;
 }
-

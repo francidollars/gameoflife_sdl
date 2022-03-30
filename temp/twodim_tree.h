@@ -13,10 +13,11 @@
 #include <stdio.h>
 
 // TODO Add TWODIMTREE structure with num_points (maybe unnecessary)
-// A structure to represent node of kd tree 
-typedef struct Node { 
+// A structure to represent node of kd tree
+typedef struct Node {
 	int point[2]; // To store k dimensional point
 	struct Node *left, *right;
+
 } Node;
 
 Node* new_node(int x, int y);
@@ -34,4 +35,3 @@ int count_nodes(Node* root, int x, int y, int max_x, int max_y);
 void print_tree(Node* root);
 
 #endif /* TWODIMTREE_H_ */
-

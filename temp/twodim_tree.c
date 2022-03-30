@@ -1,6 +1,6 @@
 /*
  * twodim_tree.c
- * 
+ *
  *  Created on: Jan 7, 2020
  *      Author: Mickey
  */
@@ -19,8 +19,8 @@ void print_tree_rec(Node*, int);
 
 const int k = 2;
 
-// A method to create a node of K D tree 
-Node* new_node(int x, int y) { 
+// A method to create a node of K D tree
+Node* new_node(int x, int y) {
 	Node* temp = malloc(sizeof(Node*));
 
 	temp->point[0] = x;
@@ -79,12 +79,12 @@ bool points_equal(int point1[2], int point2[2]) {
 
 /**
  * Searches for a Point represented by "point[]" in the K-D tree.
- * 
+ *
  * @param   root- root node of K-D tree
  *          point- Point with (x, y)
  *          depth- used to determine current axis
  * @return  search_node_rec()- recursive call to run function again
- * 
+ *
  */
 bool search_node_rec(Node* root, int point[2], unsigned depth) {
 	// Base cases
@@ -93,11 +93,11 @@ bool search_node_rec(Node* root, int point[2], unsigned depth) {
 	if (points_equal(root->point, point))
 		return true;
 
-	// Current dimension is computed using current depth and total 
-	// dimensions (k) 
+	// Current dimension is computed using current depth and total
+	// dimensions (k)
 	unsigned cd = depth % k;
 
-	// Compare point with root with respect to cd (Current dimension) 
+	// Compare point with root with respect to cd (Current dimension)
 	if (point[cd] < root->point[cd])
 		return search_node_rec(root->left, point, ++depth);
 
@@ -106,7 +106,7 @@ bool search_node_rec(Node* root, int point[2], unsigned depth) {
 
 /**
  * Wrapper over search_node_rec. Searches for a Point in K-D tree
- * 
+ *
  * @param   root- root node of K-D tree
  *          x- x coordinate of Point
  *          y- y coordinate of Point
@@ -114,35 +114,35 @@ bool search_node_rec(Node* root, int point[2], unsigned depth) {
  */
 bool search_node(Node* root, int x, int y) {
     int temp_point[2] = { x , y };
-    
+
 	// Pass current depth as 0
-	return search_node_rec(root, temp_point, 0); 
+	return search_node_rec(root, temp_point, 0);
 }
 
-// A utility function to find minimum of three integers 
-Node* min_node(Node* x, Node* y, Node* z, int d) { 
+// A utility function to find minimum of three integers
+Node* min_node(Node* x, Node* y, Node* z, int d) {
 	Node* res = x;
-    
-	if (y != NULL && y->point[d] < res->point[d]) 
-	res = y; 
-	if (z != NULL && z->point[d] < res->point[d]) 
+
+	if (y != NULL && y->point[d] < res->point[d])
+	res = y;
+	if (z != NULL && z->point[d] < res->point[d])
 	res = z;
 
 	return res;
 }
 
-// Recursively finds minimum of d'th dimension in KD tree 
-// The parameter depth is used to determine current axis. 
+// Recursively finds minimum of d'th dimension in KD tree
+// The parameter depth is used to determine current axis.
 Node* find_min_rec(Node* root, int d, unsigned int depth) {
-	// Base cases 
-	if (root == NULL) 
-		return NULL; 
+	// Base cases
+	if (root == NULL)
+		return NULL;
 
-	// Current dimension is computed using current depth and total 
-	// dimensions (k) 
-	unsigned int cd = depth % k; 
+	// Current dimension is computed using current depth and total
+	// dimensions (k)
+	unsigned int cd = depth % k;
 
-	// Compare point with root with respect to cd (Current dimension) 
+	// Compare point with root with respect to cd (Current dimension)
 	if (cd == (unsigned int) d) {
 		if (root->left == NULL)
 			return root;
@@ -152,40 +152,40 @@ Node* find_min_rec(Node* root, int d, unsigned int depth) {
 
 	// If current dimension is different then minimum can be anywhere
 	// in this subtree
-	return min_node(root, 
-			find_min_rec(root->left, d, depth + 1), 
-			find_min_rec(root->right, d, depth + 1), d); 
-} 
+	return min_node(root,
+			find_min_rec(root->left, d, depth + 1),
+			find_min_rec(root->right, d, depth + 1), d);
+}
 
 /**
  * Wrapper over find_min_rec().
- * 
+ *
  * @param root - root nod of tree
  * @return minimum of d'th dimension
  */
-Node* find_min(Node* root) { 
-	// Pass current level or depth as 0 
-	return find_min_rec(root, 2, 0); 
-} 
+Node* find_min(Node* root) {
+	// Pass current level or depth as 0
+	return find_min_rec(root, 2, 0);
+}
 
 // Copies point point2 to point1
 /**
  * Copies point
- * 
+ *
  * @param point1 - copied point
  * @param point2 - reciever point
  */
 void cpy_point(int point1[2], int point2[2]) {
-    for (int i=0; i<k; i++) 
-	    point2[i] = point1[i]; 
+    for (int i=0; i<k; i++)
+	    point2[i] = point1[i];
 
-} 
+}
 
-// Function to delete a given point 'point[]' from tree with root 
-// as 'root'. depth is current depth and passed as 0 initially. 
-// Returns root of the modified tree. 
+// Function to delete a given point 'point[]' from tree with root
+// as 'root'. depth is current depth and passed as 0 initially.
+// Returns root of the modified tree.
 Node* del_node_rec(Node* root, int point[2], int depth) {
-	// Given point is not present 
+	// Given point is not present
 	if (root == NULL)
 		return NULL;
 
@@ -209,7 +209,7 @@ Node* del_node_rec(Node* root, int point[2], int depth) {
 			Node* min = find_min(root->left);
 			cpy_point(root->point, min->point);
 			root->right = del_node_rec(root->left, min->point, depth + 1);
-		} 
+		}
 		else { // If node to be deleted is leaf node
 			free(root);
 
@@ -228,31 +228,31 @@ Node* del_node_rec(Node* root, int point[2], int depth) {
 	return root;
 }
 
-// Function to delete a given point from K D Tree with 'root' 
+// Function to delete a given point from K D Tree with 'root'
 Node* del_node(Node* root, int x, int y) {
     if (search_node(root, x, y))
         return root;
-    
+
     int temp_point[2] = { x , y };
-    // Pass depth as 0 
-    return del_node_rec(root, temp_point, 0); 
+    // Pass depth as 0
+    return del_node_rec(root, temp_point, 0);
 }
 
 /**
  * Count the nodes surrounding the interval (x, y).
- * 
- * @param   root- 
- *          x- 
- *          y- 
- *          max_x- 
- *          max_y- 
- * @return  count- 
+ *
+ * @param   root-
+ *          x-
+ *          y-
+ *          max_x-
+ *          max_y-
+ * @return  count-
  */
 int count_nodes(Node* root, int x, int y, int max_x, int max_y) {
     int count = 0;
     int addx = (x + 1), subx = (x - 1);
     int addy = (y + 1), suby = (y - 1);
-    
+
     if (max_x < (x + 1)) {
         addx = 0;
     } else if (x < 1) {
@@ -263,12 +263,12 @@ int count_nodes(Node* root, int x, int y, int max_x, int max_y) {
     } else if (y < 1) {
         suby = (max_y - 1);
     }
-                                                                    
+
     printf("addx: %d\n", addx);
     printf("subx: %d\n", subx);
     printf("addy: %d\n", addy);
     printf("suby: %d\n", suby);
-    
+
     if (search_node(root, addx, y)) {
         count++;
     }
@@ -290,33 +290,32 @@ int count_nodes(Node* root, int x, int y, int max_x, int max_y) {
 
     return count;
 }
-                                              
+
 void print_tree_rec(Node* root, int space) {
-    // Base case 
+    // Base case
     if (root == NULL)
-        return; 
-  
-    // Increase distance between levels 
+        return;
+
+    // Increase distance between levels
     space += 5;
-  
-    // Process right child first 
-    print_tree_rec(root->right, space); 
-  
-    // Print current node after space 
-    for (int i = 5; i < space; i++) 
+
+    // Process right child first
+    print_tree_rec(root->right, space);
+
+    // Print current node after space
+    for (int i = 5; i < space; i++)
         printf(" ");
 
-    printf("(%d, %d)\n", root->point[0], root->point[1]); 
-  
-    // Process left child 
-    print_tree_rec(root->left, space);
+    printf("(%d, %d)\n", root->point[0], root->point[1]);
 
-} 
-  
-// Wrapper over print_tree_rec() 
-void print_tree(Node* root) { 
-   // Pass initial space count as 0 
-   print_tree_rec(root, 0);
+    // Process left child
+    print_tree_rec(root->left, space);
 
 }
 
+// Wrapper over print_tree_rec()
+void print_tree(Node* root) {
+   // Pass initial space count as 0
+   print_tree_rec(root, 0);
+
+}

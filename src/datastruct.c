@@ -7,9 +7,8 @@
 
 #include "datastruct.h"
 
+static void* ds_get_cpydatastruct(struct DataStruct*);
 static void ds_getpoints(struct DataStruct*, int*, int*);
-// static void* ds_get_cpydata(struct DataStruct*);
-// static void ds_nextgen(struct DataStruct*, void*, int*, int*);
 
 struct DataStruct* ds_create(const struct datastruct_vtable_* _ds_vtable, ...) {
     struct DataStruct* ds = (struct DataStruct*) malloc(sizeof(struct DataStruct));
@@ -54,8 +53,15 @@ SDL_Point* ds_get_sdlpoints(struct DataStruct* ds) {
     return point_arr;
 }
 
+static void* ds_get_cpydatastruct(struct DataStruct* ds) {
+
+    return (ds->ds_vtable->ds_get_cpydatastruct)(ds->ds_instance);
+}
+
 void ds_nextgen(struct DataStruct* ds) {
-    (ds->ds_vtable->ds_nextgen)(ds->ds_instance);
+    void* cpydata = ds_get_cpydatastruct(ds);
+
+    for (int )
 
 }
 

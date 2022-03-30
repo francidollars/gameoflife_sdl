@@ -19,5 +19,4 @@ struct DS_TwoDim_BoolArr {
 
 // TODO: Might need to be defined in .c
 extern const struct datastruct_vtable_* DS_TDBA;
-void set_cell_state(struct DS_TwoDim_BoolArr*, unsigned int, unsigned int, bool);
 #endif /* DS_TWODIM_BOOLARR_H_ */

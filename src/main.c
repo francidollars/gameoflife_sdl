@@ -12,20 +12,23 @@
 
 int main() {
     struct DataStruct* ds = ds_create(DS_TDBA, 640, 480);
-    SDL_SysMgr sdlmgr = init_sdl(640, 480);
+    // SDL_SysMgr sdlmgr = init_sdl(640, 480);
 
-//    int event_status;
-//    int x, y;
-//
-//    while ((event_status = input_handler(&sdlmgr, &x, &y)) != 1) {
-//        if (event_status == 2)
-//            set_cell(x, y);
-//
-//        prepare_scene(sdlmgr, (SDL_Point*) next_generation(stype, false), get_num_points(stype));
-//        present_scene(sdlmgr.renderer);
-//
-//        SDL_Delay(10);
-//    }
+    printf("%d, %d\n", (int) sizeof(struct DS_TwoDim_BoolArr), sizeof(ds->ds_instance));
+
+/*
+    int event_status;
+    int x, y;
+
+    while ((event_status = input_handler(&sdlmgr, &x, &y)) != 1) {
+        if (event_status == 2)
+            set_cell(x, y);
+
+        prepare_scene(sdlmgr, (SDL_Point*) next_generation(stype, false), get_num_points(stype));
+        present_scene(sdlmgr.renderer);
+
+        SDL_Delay(10);
+    }
 
     while (input_handler(&sdlmgr, NULL, NULL) >= 0) {
         prepare_scene(sdlmgr, ds_get_sdlpoints(ds), ds_get_numpoints(ds));
@@ -35,6 +38,7 @@ int main() {
 
         SDL_Delay(100); // TODO Implement user-set refresh rate (restricted by monitor refresh rate)
     }
+*/
 
     ds_delete(ds);
 

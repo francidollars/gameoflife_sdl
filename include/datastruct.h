@@ -18,8 +18,9 @@ struct datastruct_vtable_ {
     void (*ds_dtor)(void*);
     int (*ds_get_numpoints)(void*);
     void (*ds_getpoints)(void*, int*, int*);
-    void (*ds_nextgen)(void*);
-    // void* (*ds_get_cpydata)(void*);
+    void (*ds_addpoint)(void*, int, int);
+    void (*ds_rmpoint)(void*, int, int);
+    void* (*ds_get_cpydatastruct)(void*);
     // void (*ds_nextgen)(void*, void*, int*, int*);
 };
 

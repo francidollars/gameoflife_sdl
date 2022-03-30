@@ -14,9 +14,10 @@ list(APPEND CMAKE_MODULE_PATH
 set(CMAKE_C_FLAGS_DEBUG "-g -DDEBUG")
 
 set(SOURCE_FILES
-        ${PROJECT_SOURCE_DIR}/src/datastruct.c
         ${PROJECT_SOURCE_DIR}/src/sdl_funcs.c
         ${PROJECT_SOURCE_DIR}/src/SDL_FontCache.c # TODO: Files below this point should be public/excluded from essential headers
+        ${PROJECT_SOURCE_DIR}/src/gol.c           #     or go into own libraries (each ds has own library)
+        ${PROJECT_SOURCE_DIR}/src/datastruct.c
         ${PROJECT_SOURCE_DIR}/src/ds_twodim_boolarr.c
         # ${PROJECT_SOURCE_DIR}/src/twodim_tree.c
 )

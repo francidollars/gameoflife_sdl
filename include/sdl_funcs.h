@@ -39,12 +39,15 @@ int input_handler(SDL_SysMgr* sdl_mgr, int* x, int* y);
 /**
  * Prepare window for display
  */
-void prepare_scene(SDL_SysMgr sdl_mgr, SDL_Point* points, int num_points);
+// void prepare_scene(SDL_SysMgr sdl_mgr, SDL_Point* points, int num_points);
+void prepare_scene(SDL_SysMgr sdl_mgr);
+
+void draw_point_scene(SDL_SysMgr, int, int);
 
 /**
  * Display window
  */
-void present_scene(SDL_Renderer* renderer);
+void present_scene(SDL_SysMgr);
 
 /**
  * Get string of time

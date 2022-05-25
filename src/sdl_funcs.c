@@ -24,18 +24,17 @@ SDL_SysMgr init_sdl(int window_width, int window_height) {
     // Initialize SDL_Window
 	sdl_mgr.window = SDL_CreateWindow("Game of Life", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, window_width, window_height, SDL_WINDOW_SHOWN);
 
-    SDL_SetWindowResizable(sdl_mgr.window, false); //TODO: Pass flags in SDL_CreateWindow, this might not be necessary
+    SDL_SetWindowResizable(sdl_mgr.window, SDL_FALSE); //TODO: Pass flags in SDL_CreateWindow, this might not be necessary
 
     // Check SDL_window for errors
-	if (!sdl_mgr.window || (SDL_GetWindowSurface(sdl_mgr.window)->w != window_width)
-      || (SDL_GetWindowSurface(sdl_mgr.window)->h != window_height)) {
+	if (!sdl_mgr.window) {
 		SDL_Log("Failed to create %d x %d window:\n\t%s\n", window_width, window_height, SDL_GetError());
 
 		return sdl_mgr;
 	}
 
     // Initialize SDL_Renderer
-	sdl_mgr.renderer = SDL_CreateRenderer(sdl_mgr.window, -1, SDL_RENDERER_ACCELERATED);
+	sdl_mgr.renderer = SDL_CreateRenderer(sdl_mgr.window, -1, 0);
 	SDL_RenderSetLogicalSize(sdl_mgr.renderer, window_width, window_height);
 
     // Check SDL_Renderer for errors
@@ -44,6 +43,8 @@ SDL_SysMgr init_sdl(int window_width, int window_height) {
 
 		return sdl_mgr;
 	}
+
+    // if ((SDL_GetWindowSurface(sdl_mgr.window)->w != window_width) || (SDL_GetWindowSurface(sdl_mgr.window)->h != window_height)) { }
 
     if (SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear") != SDL_TRUE) {
         SDL_Log("Failed to set hinting:\n\t%s\n", SDL_GetError());
@@ -117,23 +118,48 @@ int input_handler(SDL_SysMgr* sdl_mgr, int* x, int* y) {
     return event_int;
 }
 
-void prepare_scene(SDL_SysMgr sdl_mgr, SDL_Point* points, int num_points) {
+/* void prepare_scene(SDL_SysMgr sdl_mgr, SDL_Point* points, int num_points) {
     // Set background to black
-    SDL_SetRenderDrawColor(sdl_mgr.renderer, 0, 0, 0, 0);
-    SDL_RenderClear(sdl_mgr.renderer);
+    if (SDL_SetRenderDrawColor(sdl_mgr.renderer, 0, 0, 0, 0))
+        SDL_Log("Failed to set SDL_Renderer draw color (on clear):\n\t%s\n", SDL_GetError());
+    if (SDL_RenderClear(sdl_mgr.renderer))
+        SDL_Log("Failed to SDL_RenderClear:\n\t%s\n", SDL_GetError());
 
     // Set pixel color to red
-    SDL_SetRenderDrawColor(sdl_mgr.renderer, 255, 0, 0, 255);
-    SDL_RenderDrawPoints(sdl_mgr.renderer, points, num_points);
+    if (SDL_SetRenderDrawColor(sdl_mgr.renderer, 255, 0, 0, 255))
+        SDL_Log("Failed to set SDL_Renderer draw color (on points):\n\t%s\n", SDL_GetError());
+    if (SDL_RenderDrawPoints(sdl_mgr.renderer, points, num_points))
+        SDL_Log("Failed to SDL_RenderDrawPoints:\n\t%s\n", SDL_GetError());
 
-    char* time_str = get_time(SDL_GetTicks());
+    // char* time_str = get_time(SDL_GetTicks());
 
-    FC_Draw(sdl_mgr.font, sdl_mgr.renderer, ((SDL_GetWindowSurface(sdl_mgr.window)->w - FC_GetWidth(sdl_mgr.font, "%s", time_str)) / 2), 0, "%s", time_str);
+    // FC_Draw(sdl_mgr.font, sdl_mgr.renderer, ((SDL_GetWindowSurface(sdl_mgr.window)->w - FC_GetWidth(sdl_mgr.font, "%s", time_str)) / 2), 0, "%s", time_str);
+
+} */
+
+void prepare_scene(SDL_SysMgr sdl_mgr) {
+    // Set background to black
+    if (SDL_SetRenderDrawColor(sdl_mgr.renderer, 0, 0, 0, 0))
+        SDL_Log("Failed to set SDL_Renderer draw color (on clear):\n\t%s\n", SDL_GetError());
+    if (SDL_RenderClear(sdl_mgr.renderer))
+        SDL_Log("Failed to SDL_RenderClear:\n\t%s\n", SDL_GetError());
+
+    // char* time_str = get_time(SDL_GetTicks());
+
+    // FC_Draw(sdl_mgr.font, sdl_mgr.renderer, ((SDL_GetWindowSurface(sdl_mgr.window)->w - FC_GetWidth(sdl_mgr.font, "%s", time_str)) / 2), 0, "%s", time_str);
 
 }
 
-void present_scene(SDL_Renderer* renderer) {
-    SDL_RenderPresent(renderer);
+void draw_point_scene(SDL_SysMgr sdl_mgr, int x, int y) {
+    if (SDL_SetRenderDrawColor(sdl_mgr.renderer, 255, 0, 0, 255))
+        SDL_Log("Failed to set SDL_Renderer draw color (on points):\n\t%s\n", SDL_GetError());
+    if (SDL_RenderDrawPoint(sdl_mgr.renderer, x, y))
+        SDL_Log("Failed SDL_RenderDrawPoint:\n\t%s\n", SDL_GetError());
+
+}
+
+void present_scene(SDL_SysMgr sdl_mgr) {
+    SDL_RenderPresent(sdl_mgr.renderer);
 
 }
 

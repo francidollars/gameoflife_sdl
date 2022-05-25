@@ -8,15 +8,8 @@
 #ifndef DS_TWODIM_BOOLARR_H_
 #define DS_TWODIM_BOOLARR_H_
 
-#include "datastruct.h"
+#include "DataStruct/datastruct.h"
 
-struct DS_TwoDim_BoolArr {
-	bool** arr;
-	int num_points;
-	unsigned int num_cols;
-	unsigned int num_rows;
-};
-
-// TODO: Might need to be defined in .c
 extern const struct datastruct_vtable_* DS_TDBA;
+
 #endif /* DS_TWODIM_BOOLARR_H_ */
